@@ -2,10 +2,8 @@ import express from "express";
 import { env, sequelize } from "./config";
 import session from "express-session";
 import connectRedis from "connect-redis";
-import Redis from "ioredis";
-import { authRouter } from "./routes";
+import { authRouter, dashboardRouter } from "./routes";
 import { globalErrorMiddleware } from "./middleware";
-import dashboardRouter from "./routes/dashboard-routes";
 import redisClient from "./config/redis-client.config";
 
 const application = async () => {

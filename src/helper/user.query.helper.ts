@@ -1,6 +1,7 @@
 import { User } from "../model";
 
 const UserQueryHelper = {
+  
   findByEmail: (email: String): Promise<User | null> => {
     return User.findOne({ where: { email: email } });
   },

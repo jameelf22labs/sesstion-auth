@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkUserHandler } from "../controller";
-import sessionMiddleware from "../middleware/session.middleware";
+import { sessionMiddleware } from "../middleware";
 
 const dashboardRouter = Router();
 
