@@ -6,13 +6,15 @@ import {
   NotNull,
   PrimaryKey,
   Unique,
+  Table,
 } from "@sequelize/core/decorators-legacy";
 import { v4 as uuid } from "uuid";
 
+@Table({ tableName: "userdetails" })
 export default class User extends Model {
   @Attribute(DataTypes.INTEGER)
-  @PrimaryKey()
-  @AutoIncrement()
+  @PrimaryKey
+  @AutoIncrement
   declare id: number;
 
   @Attribute(DataTypes.STRING)
@@ -29,14 +31,14 @@ export default class User extends Model {
   declare password: string;
 
   @Attribute(DataTypes.DATE)
-  @Default(() => Date.now)
-  declare createdAt: string;
+  @Default(() => new Date())
+  declare createdAt: Date;
 
   @Attribute(DataTypes.DATE)
-  declare lastLoginAt: string;
+  declare lastLoginAt: Date;
 
   @Attribute(DataTypes.BOOLEAN)
-  @Default(() => false)
+  @Default(false)
   declare isActive: boolean;
 
   @Attribute(DataTypes.STRING)

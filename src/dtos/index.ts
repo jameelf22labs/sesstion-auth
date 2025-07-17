@@ -1,3 +1,3 @@
 import { LoginCredantialDto, SignupDto , SignupResponseDto } from "./auth.dto";
-
-export { LoginCredantialDto, SignupDto , SignupResponseDto };
+import { RedisSessionPayload } from './redis.dto'
+export { LoginCredantialDto, SignupDto , SignupResponseDto , RedisSessionPayload};

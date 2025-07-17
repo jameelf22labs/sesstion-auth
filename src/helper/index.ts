@@ -1,3 +1,3 @@
-import BookQueryHelper from "./book.query.helper";
+import UserQueryHelper from "./user.query.helper";
 
-export { BookQueryHelper }
+export { UserQueryHelper }

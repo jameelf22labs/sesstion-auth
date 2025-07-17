@@ -8,10 +8,17 @@ export const loginHandler = async (
   next: NextFunction
 ) => {
   try {
-    const providerResponse = await loginProvider(
-      request.body as LoginCredantialDto
-    );
+    const user = await loginProvider(request.body as LoginCredantialDto);
+
+    request.session.user = {
+      uuid: user.uuid,
+      email: user.email,
+    };
+
+    await request.session.save();
+    return response.status(201).json({ message: "User successfully login" });
   } catch (error) {
+    request.session.destroy(() => {});
     next(error);
   }
 };
@@ -23,6 +30,9 @@ export const signUpHandler = async (
 ) => {
   try {
     const providerResponse = await signUpProvider(request.body as SignupDto);
+    return response
+      .status(201)
+      .json({ message: "User successfully signup", user: providerResponse });
   } catch (error) {
     next(error);
   }

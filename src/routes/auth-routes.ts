@@ -8,3 +8,4 @@ authRouter.post("/auth/login", loginHandler);
 authRouter.post("/auth/logout", logoutHandler);
 
 export default authRouter;
+    

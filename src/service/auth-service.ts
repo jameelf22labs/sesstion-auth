@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import { LoginCredantialDto, SignupDto, SignupResponseDto } from "../dtos";
 import { BadRequestError, NotFoundError } from "../error";
 import { User } from "../model";
-import { BookQueryHelper } from "../helper";
+import { UserQueryHelper } from "../helper";
 
 export const loginProvider = async (credential: LoginCredantialDto) => {
-  const user = await BookQueryHelper.findByEmail(credential.email);
+  const user = await UserQueryHelper.findByEmail(credential.email);
 
   if (!user) throw new NotFoundError("User not found");
 
@@ -14,18 +14,22 @@ export const loginProvider = async (credential: LoginCredantialDto) => {
     user.password
   );
 
-  if (!hasPasswordValid) throw new BadRequestError("Invalid Credentials");
+  if (hasPasswordValid) {
+    await UserQueryHelper.updateDoc(
+      { lastLoginAt: Date.now(), isActive: true },
+      { email: credential.email }
+    );
 
-  await BookQueryHelper.updateDoc(
-    { lastLoginAt: Date.now(), isActive: true },
-    { email: credential.email }
-  );
+    return user;
+  }
+
+  throw new BadRequestError("Invalid Credentials");
 };
 
 export const signUpProvider = async (
   newUser: SignupDto
 ): Promise<SignupResponseDto> => {
-  const user = await BookQueryHelper.findByEmail(newUser.email);
+  const user = await UserQueryHelper.findByEmail(newUser.email);
 
   if (user) throw new BadRequestError("Your email already in our app");
 
@@ -44,5 +48,5 @@ export const signUpProvider = async (
 };
 
 export const logoutProvider = async (user: User) => {
-  await BookQueryHelper.updateDoc({ isActive: false }, { email: user.email });
+  await UserQueryHelper.updateDoc({ isActive: false }, { email: user.email });
 };

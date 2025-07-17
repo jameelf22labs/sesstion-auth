@@ -1,6 +1,6 @@
 import { User } from "../model";
 
-const BookQueryHelper = {
+const UserQueryHelper = {
   findByEmail: (email: String): Promise<User | null> => {
     return User.findOne({ where: { email: email } });
   },
@@ -17,4 +17,4 @@ const BookQueryHelper = {
   },
 };
 
-export default BookQueryHelper;
+export default UserQueryHelper;

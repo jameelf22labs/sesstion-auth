@@ -1,7 +1,12 @@
 import express from "express";
-import { createRedisConnect, env, sequelize } from "./config";
-import { RedisStore } from "connect-redis";
+import { env, sequelize } from "./config";
 import session from "express-session";
+import connectRedis from "connect-redis";
+import Redis from "ioredis";
+import { authRouter } from "./routes";
+import { globalErrorMiddleware } from "./middleware";
+import dashboardRouter from "./routes/dashboard-routes";
+import redisClient from "./config/redis-client.config";
 
 const application = async () => {
   try {
@@ -9,30 +14,34 @@ const application = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    // const redisClient = await createRedisConnect();
+    const RedisStore = connectRedis(session);
 
-    // const redisStore = new RedisStore({
-    //   client: redisClient,
-    // });
+    console.log("Redis Connected");
 
-    // app.use(
-    //   session({
-    //     store: redisStore,
-    //     secret: env.SessionSecret,
-    //     cookie: {
-    //       secure: true,
-    //       httpOnly: true,
-    //       maxAge: 1000 * 60 * 15, // 15 minutes
-    //     },
-    //   })
-    // );
-
-    console.log(env)
+    app.use(
+      session({
+        store: new RedisStore({
+          client: redisClient,
+        }),
+        secret: env.SessionSecret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          secure: false,
+          httpOnly: true,
+          maxAge: 1000 * 60 * 15,
+        },
+      })
+    );
 
     await sequelize.authenticate();
     await sequelize.sync();
+    console.log("Sequelize Connected");
 
-    console.log('Sequalize Connected')
+    app.use("/api/v1", authRouter);
+    app.use("/api/v1/dashboard", dashboardRouter);
+
+    app.use(globalErrorMiddleware);
 
     return app;
   } catch (error) {
