@@ -1,35 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { CommonUtils } from "../util/common.util";
 import { BadRequestError } from "../error";
-import { RedisLib } from "../lib/redis.lib";
-import { RedisSessionPayload } from "../dtos";
-import { UserQueryHelper } from "../helper";
+
+import { AuthenticatedRequest } from "../types";
 
 export const checkUserHandler = async (
-  request: Request,
+  request: AuthenticatedRequest,
   response: Response,
   next: NextFunction
 ) => {
   try {
-    const connectsid = request.headers["connect.sid"] as string;
-
-    if (!connectsid) {
-      throw new BadRequestError("User not found. Please login");
-    }
-
-    const sessionKey = CommonUtils.getSessionId(connectsid);
-
-    if (!sessionKey) {
-      throw new BadRequestError("User not found. Please login");
-    }
-
-    const payload = await RedisLib.getParsed<RedisSessionPayload>(sessionKey);
-
-    if (!payload) {
-      throw new BadRequestError("User not found. Please login");
-    }
-
-    const user = await UserQueryHelper.findByEmail(payload.user.email);
+    const user = request.user;
 
     if (!user) {
       throw new BadRequestError("User not found. Please login");

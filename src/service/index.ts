@@ -1,6 +1,3 @@
-import { loginProvider , signUpProvider , logoutProvider } from "./auth-service";
-export {
-    loginProvider,
-    signUpProvider,
-    logoutProvider
-}
+import AuthProvider from "./auth-service";
+
+export { AuthProvider };
