@@ -4,7 +4,7 @@ import env from "./env.config";
 
 const sequelize = new Sequelize({
   dialect: PostgresDialect,
-  database: "api_book",
+  database: "session_api",
   user: env.Postgres.user,
   password: env.Postgres.pass,
   host: env.Postgres.user,

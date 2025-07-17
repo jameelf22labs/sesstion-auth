@@ -11,7 +11,7 @@ type EnvConfig = {
 };
 
 const env: EnvConfig = {
-  Port: Number(process.env.PORT),
+  Port: Number(process.env.PORT) || 9090,
   RedisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   SessionSecret:
     process.env.SESSION_SECRET || "hello__________it_________secured",

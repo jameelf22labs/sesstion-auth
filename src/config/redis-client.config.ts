@@ -1,7 +1,7 @@
 import { createClient } from "redis";
 import env from "./env.config";
 
-const createRedisConnect = () => {
+const createRedisConnect = async () => {
   const redisClient = createClient({
     url: env.RedisUrl,
   });
@@ -10,10 +10,10 @@ const createRedisConnect = () => {
     console.log("Redis error ", error);
   });
 
-  redisClient
-    .connect()
-    .then(() => console.log("Redis Connected"))
-    .catch(console.error);
+  await redisClient.connect();
+  console.log("Redis Connected");
+
+  return redisClient;
 };
 
 export default createRedisConnect;
