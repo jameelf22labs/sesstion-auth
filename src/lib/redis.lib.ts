@@ -8,7 +8,6 @@ export const RedisLib = {
   getParsed: async <T>(key: string): Promise<T | null> => {
     const value = await redisClient.get(key);
     if (!value) return null;
-
     try {
       return JSON.parse(value);
     } catch (error) {
