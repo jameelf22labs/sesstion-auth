@@ -4,7 +4,7 @@ import { BadRequestError, NotFoundError } from "../error";
 import { User } from "../model";
 import { BookQueryHelper } from "../helper";
 
-export const login = async (credential: LoginCredantialDto) => {
+export const loginProvider = async (credential: LoginCredantialDto) => {
   const user = await BookQueryHelper.findByEmail(credential.email);
 
   if (!user) throw new NotFoundError("User not found");
@@ -22,7 +22,7 @@ export const login = async (credential: LoginCredantialDto) => {
   );
 };
 
-export const signUp = async (
+export const signUpProvider = async (
   newUser: SignupDto
 ): Promise<SignupResponseDto> => {
   const user = await BookQueryHelper.findByEmail(newUser.email);
@@ -43,6 +43,6 @@ export const signUp = async (
   };
 };
 
-export const logout = async (user: User) => {
+export const logoutProvider = async (user: User) => {
   await BookQueryHelper.updateDoc({ isActive: false }, { email: user.email });
 };
