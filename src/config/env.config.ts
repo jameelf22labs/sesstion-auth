@@ -1,9 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 type EnvConfig = {
   Port: number;
   RedisUrl: string;
   SessionSecret: string;
   Postgres: {
-    host: number;
+    host: string;
     port: number;
     user: string;
     pass: string;
@@ -17,7 +20,7 @@ const env: EnvConfig = {
     process.env.SESSION_SECRET || "hello__________it_________secured",
 
   Postgres: {
-    host: Number(process.env.POSTGRESS_HOST),
+    host: process.env.POSTGRESS_HOST || 'localhost',
     port: Number(process.env.POSTGRESS_PORT),
     user: process.env.POSTGRESS_USERNAME || "root",
     pass: process.env.POSTGRESS_PASSWORD || "root",

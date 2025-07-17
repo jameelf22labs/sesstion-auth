@@ -9,26 +9,30 @@ const application = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    const redisClient = await createRedisConnect();
+    // const redisClient = await createRedisConnect();
 
-    const redisStore = new RedisStore({
-      client: redisClient,
-    });
+    // const redisStore = new RedisStore({
+    //   client: redisClient,
+    // });
 
-    app.use(
-      session({
-        store: redisStore,
-        secret: env.SessionSecret,
-        cookie: {
-          secure: true,
-          httpOnly: true,
-          maxAge: 1000 * 60 * 15, // 15 minutes
-        },
-      })
-    );
+    // app.use(
+    //   session({
+    //     store: redisStore,
+    //     secret: env.SessionSecret,
+    //     cookie: {
+    //       secure: true,
+    //       httpOnly: true,
+    //       maxAge: 1000 * 60 * 15, // 15 minutes
+    //     },
+    //   })
+    // );
+
+    console.log(env)
 
     await sequelize.authenticate();
     await sequelize.sync();
+
+    console.log('Sequalize Connected')
 
     return app;
   } catch (error) {
