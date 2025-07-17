@@ -40,7 +40,7 @@ const AuthHandler = {
         return response.status(401).json({ message: "Unauthorized" });
       }
 
-      const sessionKey = request.sessionID;
+      const sessionKey = `sess:${request.sessionID}`;
       await AuthProvider.logout(request, sessionKey, user as User);
 
       return response
