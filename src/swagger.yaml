@@ -165,3 +165,46 @@ paths:
                   message:
                     type: string
                     example: User successfully logged out
+        404:
+          description: If Invalid Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User not found. Please login
+
+  /api/v1/dashboard/check-user:
+    get:
+      tags:
+        - Validate user if login or not
+      responses:
+        200:
+          description: User is now
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User is Exist
+
+                  user:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: jamil@hello.com
+                      name:
+                        type: string
+                        example: jamil.m.hello.
+        404:
+          description: If Invalid Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User not found. Please login
