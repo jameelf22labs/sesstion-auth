@@ -1,6 +1,6 @@
+import env from "./env.config";
 import { Sequelize } from "@sequelize/core";
 import { PostgresDialect } from "@sequelize/postgres";
-import env from "./env.config";
 import { User } from "../model";
 
 const sequelize = new Sequelize({

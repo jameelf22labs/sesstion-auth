@@ -1,12 +1,12 @@
 import { Request } from "express";
 import bcrypt from "bcrypt";
+import { Session } from "express-session";
 import { LoginCredantialDto, SignupDto, SignupResponseDto } from "../dtos";
 import { BadRequestError, NotFoundError } from "../error";
 import { User } from "../model";
 import { UserQueryHelper } from "../helper";
 import { RedisLib } from "../lib/redis.lib";
 import { AuthenticatedRequest, SessionUser } from "../types";
-import { Session } from "express-session";
 
 const AuthProvider = {
   login: async (
