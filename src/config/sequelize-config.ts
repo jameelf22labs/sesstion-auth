@@ -5,7 +5,7 @@ import { User } from "../model";
 
 const sequelize = new Sequelize({
   dialect: PostgresDialect,
-  database: "session_api",
+  database: "mydb",
   user: env.Postgres.user,
   password: env.Postgres.pass,
   host: env.Postgres.host,

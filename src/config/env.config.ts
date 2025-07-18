@@ -11,6 +11,7 @@ type EnvConfig = {
     user: string;
     pass: string;
   };
+  Redis_url : string
 };
 
 const env: EnvConfig = {
@@ -25,6 +26,8 @@ const env: EnvConfig = {
     user: process.env.POSTGRESS_USERNAME || "root",
     pass: process.env.POSTGRESS_PASSWORD || "root",
   },
+
+  Redis_url : process.env.REDIS_URL || 'redis://redis:6379'
 };
 
 export default env;
