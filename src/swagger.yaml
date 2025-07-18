@@ -1,0 +1,89 @@
+openapi: 3.0.0
+
+info:
+  title: Session Auth
+  description: This is Redis Session App
+  version: 1.0.0
+  contact:
+    name: Jamil
+    email: jamil@google.com
+
+servers:
+  - url: http://localhost:7000/
+    description: This is Development Server
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: header
+      name: connect.sid
+
+paths:
+  /api/v1/auth/sign-up:
+    post:
+      summary: Create a account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpBody"
+      responses:
+        201:
+          description: If successfully account created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignUpResponse"
+        400:
+          description: If user already in system or similarly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Your email is already registered
+        500:
+          description: If Server Error
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Internel Server Error
+
+components:
+  schemas:
+    SignUpBody:
+      type: object
+      required: [name , email , password]
+      properties:
+        name:
+          type: string
+          example: jamil.m.hello.
+        email:
+          type: string
+          example: jamil@gmail.com
+        password:
+          type: string
+          example: techieeee
+
+    SignUpResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: jamil.m.hello.
+        email:
+          type: string
+          example: jamil@gmail.com
+        uuid:
+          type: string
+          example: iuhweifh97ru9r82g4
+
+
+
