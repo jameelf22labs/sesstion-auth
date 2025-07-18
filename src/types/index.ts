@@ -1,3 +1,4 @@
 import { AuthenticatedRequest } from "./AuthenticateRequest";
+import SessionUser from './SessionUser'
 
-export { AuthenticatedRequest };
+export { AuthenticatedRequest , SessionUser};

@@ -5,7 +5,8 @@ import { BadRequestError, NotFoundError } from "../error";
 import { User } from "../model";
 import { UserQueryHelper } from "../helper";
 import { RedisLib } from "../lib/redis.lib";
-import { AuthenticatedRequest } from "../types";
+import { AuthenticatedRequest, SessionUser } from "../types";
+import { Session } from "express-session";
 
 const AuthProvider = {
   login: async (
@@ -28,7 +29,7 @@ const AuthProvider = {
       { email: user.email }
     );
 
-    request.session.user = {
+    (request.session as Session & { user?: SessionUser }).user = {
       uuid: user.uuid,
       email: user.email,
     };

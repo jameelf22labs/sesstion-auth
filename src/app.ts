@@ -5,6 +5,9 @@ import connectRedis from "connect-redis";
 import { authRouter, dashboardRouter } from "./routes";
 import { globalErrorMiddleware } from "./middleware";
 import redisClient from "./config/redis-client.config";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+import path from "path";
 
 const application = async () => {
   try {
@@ -36,6 +39,11 @@ const application = async () => {
     await sequelize.sync();
     console.log("Sequelize Connected");
 
+    const swaggerDocument = YAML.load(
+      path.join(process.cwd(), "src", "swagger.yaml")
+    );
+
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use("/api/v1", authRouter);
     app.use("/api/v1/dashboard", dashboardRouter);
 
