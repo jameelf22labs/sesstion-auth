@@ -10,6 +10,7 @@ type EnvConfig = {
     port: number;
     user: string;
     pass: string;
+    Db: string;
   };
   Redis_url : string
 };
@@ -25,6 +26,7 @@ const env: EnvConfig = {
     port: Number(process.env.POSTGRESS_PORT),
     user: process.env.POSTGRESS_USERNAME || "root",
     pass: process.env.POSTGRESS_PASSWORD || "root",
+    Db: process.env.POSTGRESS_DB || 'session_auth_db'
   },
 
   Redis_url : process.env.REDIS_URL || 'redis://redis:6379'
