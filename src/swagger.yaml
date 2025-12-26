@@ -1,0 +1,210 @@
+openapi: 3.0.0
+
+info:
+  title: Session Auth
+  description: This is Redis Session App
+  version: 1.0.0
+  contact:
+    name: Jamil
+    email: jamil@google.com
+
+servers:
+  - url: http://localhost:9000/
+    description: Development Server
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: header
+      name: connect.sid
+
+  schemas:
+    SignUpBody:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          example: jamil.m.hello.
+        email:
+          type: string
+          example: jamil@gmail.com
+        password:
+          type: string
+          example: techieeee
+
+    SignUpResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: jamil.m.hello.
+        email:
+          type: string
+          example: jamil@gmail.com
+        uuid:
+          type: string
+          example: iuhweifh97ru9r82g4
+
+    LoginCredentialBody:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          example: jamil@gmail.com
+        password:
+          type: string
+          example: techieee
+
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+
+paths:
+  /api/v1/auth/sign-up:
+    post:
+      tags:
+        - Create Account
+      summary: Create an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpBody"
+      responses:
+        201:
+          description: Successfully created account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignUpResponse"
+        400:
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Your email is already registered
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Login Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentialBody"
+      responses:
+        201:
+          description: Successfully Login
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User successfully logged in
+
+        400:
+          description: If try to login without create account
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+
+        404:
+          description: if try to login invalid credentials
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Invalid credentials
+
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /api/v1/auth/logout:
+    post:
+      tags:
+        - Logout Account
+      security:
+        - sessionAuth: []
+      responses:
+        200:
+          description: Successfully Logout
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User successfully logged out
+        404:
+          description: If Invalid Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User not found. Please login
+
+  /api/v1/dashboard/check-user:
+    get:
+      tags:
+        - Validate user if login or not
+      responses:
+        200:
+          description: User is now
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User is Exist
+
+                  user:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: jamil@hello.com
+                      name:
+                        type: string
+                        example: jamil.m.hello.
+        404:
+          description: If Invalid Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: User not found. Please login

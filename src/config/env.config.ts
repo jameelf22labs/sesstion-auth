@@ -1,0 +1,35 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+type EnvConfig = {
+  Port: number;
+  RedisUrl: string;
+  SessionSecret: string;
+  Postgres: {
+    host: string;
+    port: number;
+    user: string;
+    pass: string;
+    Db: string;
+  };
+  Redis_url : string
+};
+
+const env: EnvConfig = {
+  Port: Number(process.env.PORT) || 9090,
+  RedisUrl: process.env.REDIS_URL || "redis://localhost:6379",
+  SessionSecret:
+    process.env.SESSION_SECRET || "hello__________it_________secured",
+
+  Postgres: {
+    host: process.env.POSTGRESS_HOST || 'localhost',
+    port: Number(process.env.POSTGRESS_PORT),
+    user: process.env.POSTGRESS_USERNAME || "root",
+    pass: process.env.POSTGRESS_PASSWORD || "root",
+    Db: process.env.POSTGRESS_DB || 'session_auth_db'
+  },
+
+  Redis_url : process.env.REDIS_URL || 'redis://redis:6379'
+};
+
+export default env;
